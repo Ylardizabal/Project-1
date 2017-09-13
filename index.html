@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Restaurant Search</title>
+  <!-- Bootswatch Styling for Improving the Aesthetics -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.6/flatly/bootstrap.min.css">
+
+  <!-- Font Awesome CSS Icons (For cool glyphicons) -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+  <!-- Style to fix the issue of text extending past panel length -->
+  <style>
+    .panel-body a {
+      word-break: break-all;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Main Bootstrap Search -->
+  <div class="container">
+
+    <!-- Jumbotron for Title -->
+    <div class="jumbotron" style="background-color: #20315A ; color: white;">
+      <h1 class="text-center"><strong><i class="fa fa-cutlery"></i> Restaraunt Deal Search</strong></h1>
+    </div>
+
+    <!-- Row for Searching New York Times -->
+    <div class="row">
+      <div class="col-sm-12">
+        <br>
+        <!-- First panel is for handling the search parameters -->
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title"><strong><i class="fa  fa-list-alt"></i>   Search Parameters</strong></h3>
+          </div>
+          <div class="panel-body">
+
+            <!-- Here we create an HTML Form for handling the inputs-->
+            <form role="form">
+
+              <!-- Here we create the text box for capturing the search term-->
+              <div class="form-group">
+                <label for="search">Zipcode:</label>
+                <input type="text" class="form-control" id="zipcode">
+              </div>
+
+              <div class="form-group">
+                <label for="radius">Radius:</label>
+                <input type="text" class="form-control" id="radius">
+              </div>
+
+              <!-- Here we capture the number of records that the user wants to retrieve  -->
+              <div class="form-group">
+                <label for="pwd">Number of Deals to Retrieve:</label>
+                <select class="form-control" id="num-records-select">
+							<option value="1">1</option>
+							<!-- Setting the option for 5 as default -->
+							<option value="5" selected>5</option>
+							<option value="10">10</option>
+						</select>
+              </div>
+
+              
+              <!-- Here we have our final submit button -->
+              <button type="submit" class="btn btn-default" id="run-search"><i class="fa fa-search"></i> Search</button>
+              <button type="button" class="btn btn-default" id="clear-all"><i class="fa fa-trash"></i> Clear Results</button>
+
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- This row will handle all of the retrieved articles -->
+    <div class="row">
+      <div class="col-sm-12">
+        <br>
+
+        <!-- This panel will initially be made up of a panel and wells for each of the articles retrieved -->
+        <div class="panel panel-primary">
+
+          <!-- Panel Heading for the retrieved articles box -->
+          <div class="panel-heading">
+            <h3 class="panel-title"><strong><i class="fa fa-table"></i>   Top Results</strong></h3>
+          </div>
+
+          <!-- This main panel will hold each of the resulting articles -->
+          <div class="panel-body" id="well-section">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer Region -->
+    <div class="row">
+      <div class="col-sm-12">
+
+        <!-- Line Break followed by closing -->
+        <hr>
+        <h5 class="text-center"><small>Copyright 2017</small></h5>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- jQuery JS -->
+  <script src="https://code.jquery.com/jquery.js"></script>
+
+  <script>
+// SETUP VARIABLES
+// ==========================================================
+
+// This variable will be pre-programmed with our authentication key
+// (the one we received when we registered)
+var authKey = "bKCSH93CLvP0_bF5a-g1";
+
+// These variables will hold the results we get from the user's inputs via HTML
+var searchTerm = "";
+var numResults = 0;
+
+
+// queryURLBase is the start of our API endpoint. The searchTerm will be appended to this when
+// the user hits the search button
+var queryURLBase = "http://api.sqoot.com/v2/deals?api_key=" +
+  authKey + "&location=";
+
+// Counter to keep track of article numbers as they come in
+var articleCounter = 0;
+
+// FUNCTIONS
+// ==========================================================
+
+// This runQuery function expects two parameters:
+// (the number of articles to show and the final URL to download data from)
+function runQuery(numArticles, queryURL) {
+
+  // The AJAX function uses the queryURL and GETS the JSON data associated with it.
+  // The data then gets stored in the variable called: "SqootData"
+
+  $.ajax({
+    url: queryURL,
+    method: "GET"
+  }).done(function(SqootData) {
+
+    // Logging the URL so we have access to it for troubleshooting
+    console.log("------------------------------------");
+    console.log("URL: " + queryURL);
+    console.log("------------------------------------");
+
+    // Log the SqootData to console, where it will show up as an object
+    console.log(SqootData);
+    console.log("------------------------------------");
+
+    // Loop through and provide the correct number of articles
+    for (var i = 0; i < numArticles; i++) {
+
+      // Add to the Article Counter (to make sure we show the right number)
+      articleCounter++;
+
+      // Create the HTML well (section) and add the article content for each
+      var wellSection = $("<div>");
+      wellSection.addClass("well");
+      wellSection.attr("id", "article-well-" + articleCounter);
+      $("#well-section").append(wellSection);
+
+      // Confirm that the specific JSON for the article isn't missing any details
+      // If the article has a headline include the headline in the HTML
+      if (SqootData.deals[i].deal.title !== "null") {
+        $("#article-well-" + articleCounter)
+          .append(
+            "<h3 class='articleHeadline'><span class='label label-primary'>" +
+            articleCounter + "</span><strong> " +
+            SqootData.deals[i].deal.title + "</strong></h3>"
+          );
+      if (SqootData.deals[i].deal.description !== null){
+          $("#article-well-" + articleCounter)
+          .append("<h5>" + SqootData.deals[i].deal.description + "</h5>");
+        }
+          
+          $("#article-well-" + articleCounter)
+          .append("<h5>" + SqootData.deals[i].deal.fine_print + "</h5>");
+
+          $("#article-well-" + articleCounter)
+          .append("<img src=" + SqootData.deals[i].deal.image_url + "&geometry=150x>");
+
+        // Log the first article's headline to console 
+        console.log(SqootData.deals[i].deal.title);
+      }
+
+      }
+  });
+
+}
+// METHODS
+// ==========================================================
+
+// on.("click") function associated with the Search Button
+$("#run-search").on("click", function(event) {
+  // This line allows us to take advantage of the HTML "submit" property
+  // This way we can hit enter on the keyboard and it registers the search
+  // (in addition to clicks).
+  event.preventDefault();
+
+  // Initially sets the articleCounter to 0
+  articleCounter = 0;
+
+  // Empties the region associated with the articles
+  $("#well-section").empty();
+
+  // Grabbing text the user typed into the search input
+  searchTerm = $("#zipcode").val().trim();
+  var queryURL = queryURLBase + searchTerm + "&category_slugs=restaurants";
+
+  // Number of results the user would like displayed
+  numResults = $("#num-records-select").val();
+
+  // Start Year
+  radius = $("#radius").val().trim();
+
+  // If the user provides a radius -- the radius will be included in the queryURL
+  if (parseInt(radius)) {
+    queryURL = queryURL + "&radius=" + radius;
+  }
+
+    // Then we will pass the final queryURL and the number of results to
+  // include to the runQuery function
+  runQuery(numResults, queryURL);
+});
+
+// This button clears the top articles section
+$("#clear-all").on("click", function() {
+  articleCounter = 0;
+  $("#well-section").empty();
+});
+
+
+
+  </script>
+
+</body>
+
+</html>
