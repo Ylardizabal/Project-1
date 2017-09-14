@@ -3,6 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>Restaurant Search</title>
   <!-- Bootswatch Styling for Improving the Aesthetics -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.6/flatly/bootstrap.min.css">
@@ -15,6 +16,14 @@
     .panel-body a {
       word-break: break-all;
     }
+
+    /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 700px;
+      }
+      
+
   </style>
 </head>
 
@@ -28,7 +37,7 @@
       <h1 class="text-center"><strong><i class="fa fa-cutlery"></i> Restaraunt Deal Search</strong></h1>
     </div>
 
-    <!-- Row for Searching New York Times -->
+    <!-- Row for Searching Sqoot -->
     <div class="row">
       <div class="col-sm-12">
         <br>
@@ -42,7 +51,7 @@
             <!-- Here we create an HTML Form for handling the inputs-->
             <form role="form">
 
-              <!-- Here we create the text box for capturing the search term-->
+              <!-- Here we create the text box for capturing the location and radius-->
               <div class="form-group">
                 <label for="search">Zipcode:</label>
                 <input type="text" class="form-control" id="zipcode">
@@ -53,7 +62,7 @@
                 <input type="text" class="form-control" id="radius">
               </div>
 
-              <!-- Here we capture the number of records that the user wants to retrieve  -->
+              <!-- Here we capture the number of results that the user wants to retrieve  -->
               <div class="form-group">
                 <label for="pwd">Number of Deals to Retrieve:</label>
                 <select class="form-control" id="num-records-select">
@@ -75,25 +84,27 @@
       </div>
     </div>
 
-    <!-- This row will handle all of the retrieved articles -->
+    <!-- This row will handle all of the results -->
     <div class="row">
       <div class="col-sm-12">
         <br>
 
-        <!-- This panel will initially be made up of a panel and wells for each of the articles retrieved -->
+        <!-- This panel will initially be made up of a panel and wells for each of the results retrieved -->
         <div class="panel panel-primary">
 
-          <!-- Panel Heading for the retrieved articles box -->
+          <!-- Panel Heading for the retrieved results box -->
           <div class="panel-heading">
             <h3 class="panel-title"><strong><i class="fa fa-table"></i>   Top Results</strong></h3>
           </div>
 
-          <!-- This main panel will hold each of the resulting articles -->
+          <!-- This main panel will hold each of the results -->
           <div class="panel-body" id="well-section">
           </div>
         </div>
       </div>
     </div>
+
+  <div id="map"></div>
 
     <!-- Footer Region -->
     <div class="row">
@@ -129,15 +140,17 @@ var numResults = 0;
 var queryURLBase = "http://api.sqoot.com/v2/deals?api_key=" +
   authKey + "&location=";
 
-// Counter to keep track of article numbers as they come in
-var articleCounter = 0;
+// Counter to keep track of result numbers as they come in
+var resultsCounter = 0;
+
+var locations = [];
 
 // FUNCTIONS
 // ==========================================================
 
 // This runQuery function expects two parameters:
 // (the number of articles to show and the final URL to download data from)
-function runQuery(numArticles, queryURL) {
+function runQuery(numResults, queryURL) {
 
   // The AJAX function uses the queryURL and GETS the JSON data associated with it.
   // The data then gets stored in the variable called: "SqootData"
@@ -156,44 +169,58 @@ function runQuery(numArticles, queryURL) {
     console.log(SqootData);
     console.log("------------------------------------");
 
-    // Loop through and provide the correct number of articles
-    for (var i = 0; i < numArticles; i++) {
+    // Loop through and provide the correct number of results
+    for (var i = 0; i < numResults; i++) {
 
-      // Add to the Article Counter (to make sure we show the right number)
-      articleCounter++;
+      // Add to the results Counter (to make sure we show the right number)
+      resultsCounter++;
 
-      // Create the HTML well (section) and add the article content for each
+      // Create the HTML well (section) and add the result content for each
       var wellSection = $("<div>");
       wellSection.addClass("well");
-      wellSection.attr("id", "article-well-" + articleCounter);
+      wellSection.attr("id", "article-well-" + resultsCounter);
       $("#well-section").append(wellSection);
 
-      // Confirm that the specific JSON for the article isn't missing any details
-      // If the article has a headline include the headline in the HTML
+      // Confirm that the specific JSON for the result isn't missing any details
+      // If the result has a title include the title in the HTML
       if (SqootData.deals[i].deal.title !== "null") {
-        $("#article-well-" + articleCounter)
+        $("#article-well-" + resultsCounter)
           .append(
             "<h3 class='articleHeadline'><span class='label label-primary'>" +
-            articleCounter + "</span><strong> " +
+            resultsCounter + "</span><strong> " +
             SqootData.deals[i].deal.title + "</strong></h3>"
           );
+      // If the result has a description include the descripton in the HTML
       if (SqootData.deals[i].deal.description !== null){
-          $("#article-well-" + articleCounter)
+          $("#article-well-" + resultsCounter)
           .append("<h5>" + SqootData.deals[i].deal.description + "</h5>");
         }
-          
-          $("#article-well-" + articleCounter)
+      //include the fine print and image in the HTML    
+          $("#article-well-" + resultsCounter)
           .append("<h5>" + SqootData.deals[i].deal.fine_print + "</h5>");
 
-          $("#article-well-" + articleCounter)
+          $("#article-well-" + resultsCounter)
           .append("<img src=" + SqootData.deals[i].deal.image_url + "&geometry=150x>");
 
-        // Log the first article's headline to console 
+        // Log the first article's title to console 
         console.log(SqootData.deals[i].deal.title);
+        console.log(SqootData.deals[i].deal.merchant.latitude + ", " + SqootData.deals[i].deal.merchant.longitude)
       }
 
+      var lat = SqootData.deals[i].deal.merchant.latitude;
+      var long = SqootData.deals[i].deal.merchant.longitude;
+
+      locations.push("position: new google.maps.latlng(" + lat + ", " + long +")");
+
+      console.log(lat + ", " + long);
+
+      //End of Loop
       }
+
+      console.log(locations);
+
   });
+
 
 }
 // METHODS
@@ -206,8 +233,8 @@ $("#run-search").on("click", function(event) {
   // (in addition to clicks).
   event.preventDefault();
 
-  // Initially sets the articleCounter to 0
-  articleCounter = 0;
+  // Initially sets the resultsCounter to 0
+  resultsCounter = 0;
 
   // Empties the region associated with the articles
   $("#well-section").empty();
@@ -234,13 +261,55 @@ $("#run-search").on("click", function(event) {
 
 // This button clears the top articles section
 $("#clear-all").on("click", function() {
-  articleCounter = 0;
+  resultsCounter = 0;
   $("#well-section").empty();
 });
 
 
 
   </script>
+<script>
+
+var locations = [
+  {
+    position: new google.maps.LatLng(40.2686254, -74.7835104)
+  }, {
+    position: new google.maps.latlng(40.244783, -74.742586)
+  }, {
+    position: new google.maps.latlng(40.275524, -74.794676)
+  }, {
+    position: new google.maps.latlng(40.29467, -74.682773)
+  }, {
+    position: new google.maps.latlng(40.246419, -74.744626)
+  }];
+
+
+// Google Map API
+      var map;
+      function initMap() {
+        console.log("map working")
+        map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 16,
+          center: new google.maps.LatLng(40.3486111, -74.6594444),
+          mapTypeId: 'roadmap'
+        });
+
+         // Create markers.
+        locations.forEach(function(feature) {
+          console.log("marker working");
+          var marker = new google.maps.Marker({
+            position: feature.position,
+            // position: {lat: 40.3486111, lng: -74.6594444},
+            // icon: 'http://thebouncinbarn.weebly.com/uploads/8/7/5/5/8755827/money_orig.png',
+            map: map
+          });
+        });
+      }
+// End
+</script>
+   <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpmYTKVSlIh-2cowBdYUTbL1WzgW9iLtY&callback=initMap">
+    </script>
 
 </body>
 
