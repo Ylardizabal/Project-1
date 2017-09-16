@@ -19,7 +19,10 @@ var queryURLBase = "http://api.sqoot.com/v2/deals?api_key=" +
 // Counter to keep track of result numbers as they come in
 var resultsCounter = 0;
 
+var zipcodeLat = "";
+var zipcodeLng = "";
 var locations = [];
+
 
 // FUNCTIONS
 // ==========================================================
@@ -43,6 +46,24 @@ function runQuery(numResults, queryURL) {
 
     // Log the SqootData to console, where it will show up as an object
     console.log(SqootData);
+    console.log("------------------------------------");
+
+    //Log zipcode center lat and long
+    console.log("SqootData location data");
+    console.log(SqootData.query.location.latitude);
+    console.log(SqootData.query.location.longitude);
+    console.log("------------------------------------");
+    //storing it as variables
+    zipcodeLat = SqootData.query.location.latitude;
+    zipcodeLng = SqootData.query.location.longitude;
+    //storing it in localStorage
+    localStorage.clear();
+    localStorage.setItem("zipcodeLat", zipcodeLat);
+    localStorage.setItem("zipcodeLng", zipcodeLng);
+    console.log("------------------------------------");
+    console.log("localstorage");
+    console.log(localStorage.getItem("zipcodeLat"));
+    console.log(localStorage.getItem("zipcodeLng"));
     console.log("------------------------------------");
 
     // Loop through and provide the correct number of results
@@ -86,9 +107,13 @@ function runQuery(numResults, queryURL) {
       var lat = SqootData.deals[i].deal.merchant.latitude;
       var long = SqootData.deals[i].deal.merchant.longitude;
 
-      locations.push("position: new google.maps.latlng(" + lat + ", " + long +")");
+      // dynamicArray.map(value => ({'key': value, 'val': 'whatever you want'}));
+      locations.push('{position: new google.maps.latlng(' + lat + ', ' + long +')}');
+      // locations.push({lat: 40.3486111, lng: -74.6594444});
 
       console.log(lat + ", " + long);
+      localStorage.setItem("locations", locations);
+
 
       //End of Loop
       }
@@ -140,43 +165,6 @@ $("#clear-all").on("click", function() {
   resultsCounter = 0;
   $("#well-section").empty();
 });
-
-// Google Map API
-var locations = [
-  {
-    position: new google.maps.LatLng(40.2686254, -74.7835104)
-  }, {
-    position: new google.maps.latlng(40.244783, -74.742586)
-  }, {
-    position: new google.maps.latlng(40.275524, -74.794676)
-  }, {
-    position: new google.maps.latlng(40.29467, -74.682773)
-  }, {
-    position: new google.maps.latlng(40.246419, -74.744626)
-  }];
-
-  console.log(locations);
-
-      var map;
-      function initMap() {
-        console.log("map working")
-        map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 16,
-          center: new google.maps.LatLng(40.3486111, -74.6594444),
-          mapTypeId: 'roadmap'
-        });
-
-         // Create markers.
-        locations.forEach(function(feature) {
-          console.log("marker working");
-          var marker = new google.maps.Marker({
-            position: feature.position,
-            // position: {lat: 40.3486111, lng: -74.6594444},
-            // icon: 'http://thebouncinbarn.weebly.com/uploads/8/7/5/5/8755827/money_orig.png',
-            map: map
-          });
-        });
-      }
 
 // document.ready close
 })
