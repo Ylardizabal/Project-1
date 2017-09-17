@@ -78,6 +78,15 @@ function runQuery(numResults, queryURL) {
       wellSection.attr("id", "article-well-" + resultsCounter);
       $("#well-section").append(wellSection);
 
+      if (SqootData.deals.length == 0) {
+        console.log("no deals found");
+        $("#article-well-" + resultsCounter)
+          .append(
+            "<h3 class='articleHeadline'><strong> " +
+            "No Results Found<br> Try a different location or radius" + "</strong></h3>"
+          );
+      }
+
       // Confirm that the specific JSON for the result isn't missing any details
       // If the result has a title include the title in the HTML
       if (SqootData.deals[i].deal.title !== "null") {
@@ -113,7 +122,10 @@ function runQuery(numResults, queryURL) {
       // locations.push('{position: new google.maps.latlng(' + lat + ', ' + long +')}');
       locations.push({
         key: i,
-        position: new google.maps.LatLng(lat, long)
+        position: new google.maps.LatLng(lat, long),
+        title: (SqootData.deals[i].deal.merchant.name),
+        deal:(SqootData.deals[i].deal.title),
+        linkurl:(SqootData.deals[i].deal.untracked_url),
       });
       localStorage.setItem("locations", JSON.stringify(locations));
       //End of Loop
@@ -138,6 +150,8 @@ $("#run-search").on("click", function(event) {
   // (in addition to clicks).
   event.preventDefault();
   localStorage.clear();
+  locations = [];
+  localStorage.setItem("locations", JSON.stringify(locations));
   // Initially sets the resultsCounter to 0
   resultsCounter = 0;
 
@@ -151,13 +165,14 @@ $("#run-search").on("click", function(event) {
   // Number of results the user would like displayed
   numResults = $("#num-records-select").val();
 
-  // Start Year
+  // Radius
   radius = $("#radius").val().trim();
 
   // If the user provides a radius -- the radius will be included in the queryURL
   if (parseInt(radius)) {
     queryURL = queryURL + "&radius=" + radius;
   }
+
 
     // Then we will pass the final queryURL and the number of results to
   // include to the runQuery function
