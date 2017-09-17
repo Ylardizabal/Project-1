@@ -35,16 +35,58 @@
          // Create markers.
         locations.forEach(function(feature) {
           console.log("marker working");
+          var labelstring = JSON.stringify(feature.key + 1);
+          console.log(labelstring);
           var marker = new google.maps.Marker({
             position: feature.position,
             // position: {lat: 40.3486111, lng: -74.6594444},
-            icon: "https://maps.google.com/mapfiles/kml/shapes/info-i_maps.png",
-            map: map
+            // icon: "https://maps.google.com/mapfiles/kml/shapes/info-i_maps.png",
+            map: map,
+            label: labelstring,
+            animation: google.maps.Animation.DROP,
+            title: feature.title
           });
+          var contentString = '<div id="content">'+
+            '<div id="siteNotice">'+
+            '</div>'+
+            '<h3 id="firstHeading" class="firstHeading">' + feature.title + '</h3>'+
+            '<div id="bodyContent">'+
+            '<p>'+ feature.deal +'</p>'+
+            '<p> <a href="'+feature.linkurl+'">'+
+            'Deal Link</a>'+
+            '</div>'+
+            '</div>';
+
+          var infowindow = new google.maps.InfoWindow({
+          content: contentString
+          });
+
+          marker.addListener('click', function() {
+          infowindow.open(map, marker);
+          });
+
           console.log(marker);
+
+          
+
+
+          // marker.addListener('click', toggleBounce);
+          // function toggleBounce() {
+          //   if (marker.getAnimation() !== null) {
+          //     marker.setAnimation(null);
+          //   } else {
+          //     marker.setAnimation(google.maps.Animation.BOUNCE);
+          //   }
+          // }
         });
 
+
+
+      
+
       }
+
+      
 
       // $(document).ready(function(){
 
