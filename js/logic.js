@@ -7,11 +7,9 @@ $(document).ready(function() {
 var authKey = "bKCSH93CLvP0_bF5a-g1";
 
 // These variables will hold the results we get from the user's inputs via HTML
-var searchTerm = "";
 var numResults = 0;
 
-
-// queryURLBase is the start of our API endpoint. The searchTerm will be appended to this when
+// queryURLBase is the start of our API endpoint. The zipcode will be appended to this when
 // the user hits the search button
 var queryURLBase = "http://api.sqoot.com/v2/deals?api_key=" +
   authKey + "&location=";
@@ -19,6 +17,7 @@ var queryURLBase = "http://api.sqoot.com/v2/deals?api_key=" +
 // Counter to keep track of result numbers as they come in
 var resultsCounter = 0;
 
+//These variables will hold the users zipcode info and the locations that come from the Sqoot API search
 var zipcodeLat = "";
 var zipcodeLng = "";
 var locations = [];
@@ -78,7 +77,7 @@ function runQuery(numResults, queryURL) {
       wellSection.attr("id", "article-well-" + resultsCounter);
       $("#well-section").append(wellSection);
 
-      if (SqootData.deals.length == 0) {
+      if (SqootData.query.location.postal_code == null) {
         console.log("no deals found");
         $("#article-well-" + resultsCounter)
           .append(
@@ -108,18 +107,19 @@ function runQuery(numResults, queryURL) {
           $("#article-well-" + resultsCounter)
           .append("<img src=" + SqootData.deals[i].deal.image_url + "&geometry=150x>");
 
-        // Log the first article's title to console 
+        // Log the first results title to console 
         console.log("deal title and lat+long");
         console.log(SqootData.deals[i].deal.title);
         console.log(SqootData.deals[i].deal.merchant.latitude + ", " + SqootData.deals[i].deal.merchant.longitude)
       }
-
+        //Store lat and long for each deal
       var lat = SqootData.deals[i].deal.merchant.latitude;
       var long = SqootData.deals[i].deal.merchant.longitude;
       console.log("variable lat + long");
       console.log(lat + ", " + long);
 
       // locations.push('{position: new google.maps.latlng(' + lat + ', ' + long +')}');
+      // Creates object for each deal and stores in locations array
       locations.push({
         key: i,
         position: new google.maps.LatLng(lat, long),
@@ -127,14 +127,21 @@ function runQuery(numResults, queryURL) {
         deal:(SqootData.deals[i].deal.title),
         linkurl:(SqootData.deals[i].deal.untracked_url),
       });
+      //Stores locations array in localStorage
       localStorage.setItem("locations", JSON.stringify(locations));
       //End of Loop
       }
 
+      //Verifying that locations were correctly stored 
+      console.log("-----------------------------");
       console.log("locations stored in logic.js");
       console.log(locations);
+      console.log("-----------------------------");
       console.log("locations stored in local storage");
       console.log(JSON.parse(localStorage.getItem("locations")));
+      console.log("-----------------------------");
+
+      //Initialize map
       initMap();
   });
 
@@ -149,19 +156,24 @@ $("#run-search").on("click", function(event) {
   // This way we can hit enter on the keyboard and it registers the search
   // (in addition to clicks).
   event.preventDefault();
+
+//Clear localStorage before Search so old search results are cleared
   localStorage.clear();
+//Established locations array within function
   locations = [];
+//populates locations array with stored deal locations in localStorage
   localStorage.setItem("locations", JSON.stringify(locations));
-  //Show map
+
+//Show map
   $("#map").show();
   
   // Initially sets the resultsCounter to 0
   resultsCounter = 0;
 
-  // Empties the region associated with the articles
+  // Empties the region associated with the results
   $("#well-section").empty();
 
-  // Grabbing text the user typed into the search input
+  // Grabbing text the user typed into the zipcode input
   searchTerm = $("#zipcode").val().trim();
   var queryURL = queryURLBase + searchTerm + "&category_slugs=restaurants";
 
@@ -182,7 +194,7 @@ $("#run-search").on("click", function(event) {
   runQuery(numResults, queryURL);
 });
 
-// This button clears the top articles section
+// This button clears the reults section
 $("#clear-all").on("click", function() {
   resultsCounter = 0;
   $("#well-section").empty();
@@ -198,11 +210,11 @@ $(document).ready(function() {
 
       $("#clear-all").on("click", function () {
         resultsCounter = 0;
+        $("#map").hide();
         $("#well-section").empty();
         $("#map").empty();
         // clears due to zipcode being a value
         $("#zipcode").val('')
         localStorage.removeItem("locations");
-  // console.log("hi");
 });
 });
