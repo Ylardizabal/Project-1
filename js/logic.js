@@ -180,10 +180,27 @@ $("#run-search").on("click", function(event) {
 });
 
 // This button clears the top articles section
-$("#clear-all").on("click", function() {
-  resultsCounter = 0;
-  $("#well-section").empty();
-});
+// $("#clear-all").on("click", function () {
+//   resultsCounter = 0;
+//   $("#well-section").empty();
+//  $("#map").empty();
+//  $("#zipcode").empty();
+// });
 
 // document.ready close
 })
+
+$(document).ready(function() {
+       // localStorage.clear();
+       // localStorage.removeItem("locations");
+
+       $("#clear-all").on("click", function () {
+        resultsCounter = 0;
+        $("#well-section").empty();
+        $("#map").empty();
+        // clears due to zipcode being a value
+        $("#zipcode").val('')
+        // localStorage.removeItem("locations");
+  // console.log("hi");
+});
+});
