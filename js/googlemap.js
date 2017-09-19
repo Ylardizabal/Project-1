@@ -66,34 +66,7 @@
           });
 
           console.log(marker);
-
-          
-
-
-          // marker.addListener('click', toggleBounce);
-          // function toggleBounce() {
-          //   if (marker.getAnimation() !== null) {
-          //     marker.setAnimation(null);
-          //   } else {
-          //     marker.setAnimation(google.maps.Animation.BOUNCE);
-          //   }
-          // }
         });
 
-
-
-      
-
       }
-
-      
-
-      // $(document).ready(function(){
-
-      //       $("#run-search").on("click", function() {
-      //           initMap() 
-      //       });
-      //     });
-
-
-// })
+      //})

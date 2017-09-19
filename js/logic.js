@@ -152,6 +152,9 @@ $("#run-search").on("click", function(event) {
   localStorage.clear();
   locations = [];
   localStorage.setItem("locations", JSON.stringify(locations));
+  //Show map
+  $("#map").show();
+  
   // Initially sets the resultsCounter to 0
   resultsCounter = 0;
 
@@ -187,3 +190,19 @@ $("#clear-all").on("click", function() {
 
 // document.ready close
 })
+
+$(document).ready(function() {
+       localStorage.clear();
+       localStorage.removeItem("locations");
+
+
+      $("#clear-all").on("click", function () {
+        resultsCounter = 0;
+        $("#well-section").empty();
+        $("#map").empty();
+        // clears due to zipcode being a value
+        $("#zipcode").val('')
+        localStorage.removeItem("locations");
+  // console.log("hi");
+});
+});
