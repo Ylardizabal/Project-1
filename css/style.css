@@ -18,7 +18,7 @@ right: 0;
 
 #logo {
 	text-align: center;
-	margin-top: 25px;
+  margin-bottom: 10px;
 }
 
 h1 {
@@ -88,8 +88,8 @@ background-image: url("https://www.transparenttextures.com/patterns/food.png");
 
 /*.well {
 	color: white;
-	background-color: #4f2946;
-	background-image: url("https://www.transparenttextures.com/patterns/food.png");
+	background-color: #074238;
+	background-image: url("https://www.transparenttextures.com/patterns/random-grey-variations.png");
 }*/
 
 
