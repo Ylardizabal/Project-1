@@ -81,11 +81,13 @@ function runQuery(numResults, queryURL) {
         console.log("no deals found");
         $("#article-well-" + resultsCounter)
           .append(
-            "<h3 class='articleHeadline'><strong> " +
+            "<h3 class='articleHeadline' class='animated bounceInDown'><strong> " +
             "No Results Found<br> Try a different location or radius" + "</strong></h3>"
           );
       }
 
+
+      // $("#article-well" + resultsCounter).addClass('animated bounceInDown');
       // Confirm that the specific JSON for the result isn't missing any details
       // If the result has a title include the title in the HTML
       if (SqootData.deals[i].deal.title !== "null") {
