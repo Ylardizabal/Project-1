@@ -40,7 +40,7 @@
           var marker = new google.maps.Marker({
             position: feature.position,
             // position: {lat: 40.3486111, lng: -74.6594444},
-            icon: "http://www.googlemapsmarkers.com/v1/8D03B2",
+            icon: "https://cdn4.iconfinder.com/data/icons/bold-purple-free-samples/32/Geotag_Tag_Geography_Map_Position_Pin-32.png",
             map: map,
             label: labelstring,
             animation: google.maps.Animation.DROP,
@@ -52,7 +52,7 @@
             '<h3 id="firstHeading" class="firstHeading">' + feature.title + '</h3>'+
             '<div id="bodyContent">'+
             '<p>'+ feature.deal +'</p>'+
-            '<p> <a href="'+feature.linkurl+'">'+
+            '<p> <a href="'+feature.linkurl+' " target="_blank">'+
             'Deal Link</a>'+
             '</div>'+
             '</div>';

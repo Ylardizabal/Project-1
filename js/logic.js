@@ -86,8 +86,6 @@ function runQuery(numResults, queryURL) {
           );
       }
 
-
-      // $("#article-well" + resultsCounter).addClass('animated bounceInDown');
       // Confirm that the specific JSON for the result isn't missing any details
       // If the result has a title include the title in the HTML
       if (SqootData.deals[i].deal.title !== "null") {
@@ -168,6 +166,7 @@ $("#run-search").on("click", function(event) {
 
 //Show map
   $("#map").show();
+  $("#results").show();
   
   // Initially sets the resultsCounter to 0
   resultsCounter = 0;
@@ -177,7 +176,7 @@ $("#run-search").on("click", function(event) {
 
   // Grabbing text the user typed into the zipcode input
   searchTerm = $("#zipcode").val().trim();
-  var queryURL = queryURLBase + searchTerm + "&category_slugs=restaurants";
+  var queryURL = queryURLBase + searchTerm + "&category_slugs=restaurants&per_page=20";
 
   // Number of results the user would like displayed
   numResults = $("#num-records-select").val();
@@ -213,6 +212,7 @@ $(document).ready(function() {
       $("#clear-all").on("click", function () {
         resultsCounter = 0;
         $("#map").hide();
+        $("#results").hide();
         $("#well-section").empty();
         $("#map").empty();
         // clears due to zipcode being a value
