@@ -40,7 +40,7 @@
           var marker = new google.maps.Marker({
             position: feature.position,
             // position: {lat: 40.3486111, lng: -74.6594444},
-            // icon: "https://maps.google.com/mapfiles/kml/shapes/info-i_maps.png",
+            icon: "http://www.googlemapsmarkers.com/v1/8D03B2",
             map: map,
             label: labelstring,
             animation: google.maps.Animation.DROP,
@@ -66,34 +66,7 @@
           });
 
           console.log(marker);
-
-          
-
-
-          // marker.addListener('click', toggleBounce);
-          // function toggleBounce() {
-          //   if (marker.getAnimation() !== null) {
-          //     marker.setAnimation(null);
-          //   } else {
-          //     marker.setAnimation(google.maps.Animation.BOUNCE);
-          //   }
-          // }
         });
 
-
-
-      
-
       }
-
-      
-
-      // $(document).ready(function(){
-
-      //       $("#run-search").on("click", function() {
-      //           initMap() 
-      //       });
-      //     });
-
-
-// })
+      //})
