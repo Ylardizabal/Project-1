@@ -13,7 +13,7 @@ var numResults = 0;
 
 // queryURLBase is the start of our API endpoint. The searchTerm will be appended to this when
 // the user hits the search button
-var queryURLBase = "http://api.sqoot.com/v2/deals?api_key=" +
+var queryURLBase = "https://api.sqoot.com/v2/deals?api_key=" +
   authKey + "&location=";
 
 // Counter to keep track of result numbers as they come in
@@ -82,7 +82,7 @@ function runQuery(numResults, queryURL) {
         console.log("no deals found");
         $("#article-well-" + resultsCounter)
           .append(
-            "<h3 class='articleHeadline' class='animated bounceInDown'><strong> " +
+            "<h3 class='articleHeadline'><strong> " +
             "No Results Found<br> Try a different location or radius" + "</strong></h3>"
           );
       }
