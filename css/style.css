@@ -1,0 +1,171 @@
+
+
+  .top-part{
+      background-color: #4f0240;
+background-image: url("https://www.transparenttextures.com/patterns/always-grey.png");
+
+
+      padding: 10px;
+
+   }
+
+              img{
+                margin-top: 10px;
+              }
+
+                #logo{
+                  float: left;
+                  margin-left: 20px;
+                }
+
+                #top-h3{
+                  color:white;
+                  font-family:'Gochi Hand', cursive;/*'Pacifico', cursive;*/
+                  font-size: 30px;
+                  margin-right: 15px;
+
+                }
+
+                #results-2{
+                  color: black;
+                  margin-right: 20px;
+                  float:left;
+                  align-content: center;
+                  float:left;
+                  font-family: arial;
+                  font-size: 5;
+                }
+
+                .panel-title{
+                  
+
+                  }                
+
+                .form-row{
+                /*  align-content: center;*/
+                margin-top:22px;
+                margin-right: 20px;
+                  /*margin-top: 25px;*/
+                }
+
+               /* #clear-all{
+                  margin-right: 33px;
+                }*/
+
+                
+
+             
+
+  .bottom-part{
+      background-color: #ffffff;
+background-image: url("https://www.transparenttextures.com/patterns/black-thread-light.png");
+    }
+            
+            #results-box{
+              height: 550px;
+              width:600px;
+              overflow: scroll;
+              margin-top: 40px;
+              margin-bottom: 50px;
+              margin-left: 80px;
+            }
+
+            #map {
+                  z-index: 100;
+                  position:fixed;
+                  height: 500px;
+                  width: 525px;
+                  margin-top: 60px;
+                  margin-bottom: 15px;
+                  margin-left: 60px;
+                  align-content: center;
+                } 
+
+
+
+                #num-records-select{
+                  height: 45px;
+                }
+
+
+
+                .panel-heading{
+                  height:45px;
+
+                }
+
+                #clear-all{
+
+                }
+      
+                
+                #results-box{
+                  /*background-color: #f0f0f0;
+background-image: url("https://www.transparenttextures.com/patbackground-color: #ffffff;terns/black-thread-light.png");*/
+/*background-color: #ffffff;
+background-image: url("https://www.transparenttextures.com/patterns/food.png");*/
+/*background-color: #eba800;
+background-image: url("https://www.transparenttextures.com/patterns/food.png");*/
+background-color: #3cdb07;
+background-image: url("https://www.transparenttextures.com/patterns/food.png");
+opacity: 0.5;
+/*opacity: 0.5;*/
+
+
+/*background-color: #0b8f88;
+background-image: url("https://www.transparenttextures.com/patterns/food.png");*/
+
+/*background-color: #ffffff;
+background-image: url("https://www.transparenttextures.com/patterns/food.png");*/
+
+/*background-color: #c9c9c9;
+background-image: url("https://www.transparenttextures.com/patterns/food.png");*/
+/*background-color: #752660;
+background-image: url("https://www.transparenttextures.com/patterns/food.png");*/
+                }
+
+                #results-2{
+                  font-size: 33;
+                  color: #ffffff;
+                  font-family: 'Gochi Hand', cursive;
+
+                }
+
+                #well-section{
+                 /*background-color: #eba800;
+background-image: url("https://www.transparenttextures.com/patterns/food.png");*/
+/*background-color: #4f0240;
+background-image: url("https://www.transparenttextures.com/patterns/always-grey.png");*/
+background-color: #3cdb07;
+background-image: url("https://www.transparenttextures.com/patterns/food.png");
+height: 2px;
+
+
+                }
+
+                .panel-body{
+                  align-content: center;
+                  word-break: break-all;
+                }
+
+                .well{
+                  color: #ffffff;
+                  background-color: #074238;
+background-image: url("https://www.transparenttextures.com/patterns/random-grey-variations.png");
+  
+              }
+
+
+
+  .footer{
+      position:0;
+      /*background-color: #390042;
+background-image: url("https://www.transparenttextures.com/patterns/dark-wood.png");*/
+background-color: #4f0240;
+background-image: url("https://www.transparenttextures.com/patterns/always-grey.png");
+      padding: 10px;
+    }
+
+  
+
+ 
